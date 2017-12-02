@@ -1,0 +1,8 @@
+version: '2'
+services:
+  database:
+    image: postgres:9.6
+    environment:
+      - POSTGRES_PASSWORD=$PSQL_PASSWD
+    ports:
+      - 5432:5432
