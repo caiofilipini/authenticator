@@ -25,5 +25,5 @@ type CredentialService interface {
 type Token string
 
 type AuthService interface {
-  Authenticate(username string, password string) (*Token, error)
+  Authenticate(credential *Credential, password string) (Token, error)
 }
