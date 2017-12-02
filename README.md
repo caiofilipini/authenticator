@@ -9,6 +9,15 @@ Feedback is welcome.
 * HTTP interface
 * CRUD credentials
 * Tests
+* Configuration management
+* Deployment strategy
+* Refactor, the code became a mess :(
+
+# Usage
+
+```
+curl -X POST  -u user:123456 localhost:8080/authenticate
+```
 
 ## References
 
