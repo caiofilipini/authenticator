@@ -6,17 +6,30 @@ Feedback is welcome.
 
 # TODO
 
-* HTTP interface
 * CRUD credentials
 * Tests
 * Configuration management
-* Deployment strategy
+* Define and implement deployment strategy
+* Database schema migrations
 * Refactor, the code became a mess :(
+* Log
+
+# Build
+
+```
+make build
+```
+
+# Database
+
+In order to setup the database you need to execute the statements in `database_schema.sql`
 
 # Usage
 
-```
-curl -X POST  -u user:123456 localhost:8080/authenticate
+```bash
+go run cmd/main.go # OR ./bin/authenticator
+
+curl -X POST -u user:123456 localhost:8080/authenticate
 ```
 
 ## References
