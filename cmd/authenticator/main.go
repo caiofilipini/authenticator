@@ -1,18 +1,20 @@
 package main
 
 import (
-  "github.com/brunograsselli/authenticator/postgres"
-  "github.com/brunograsselli/authenticator/http"
+	"log"
+	"net/http"
+
+	handler "github.com/brunograsselli/authenticator/http"
+	"github.com/brunograsselli/authenticator/postgres"
 )
 
 func main() {
-  client := postgres.NewClient()
+	client := postgres.NewClient()
 
-  client.Open()
+	client.Open()
 
-  defer client.Close()
+	defer client.Close()
 
-  server := http.NewServer(client)
-
-  server.Start()
+	handler := handler.NewHandler(client)
+	log.Fatal(http.ListenAndServe(":8080", handler.Router()))
 }
