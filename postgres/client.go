@@ -27,7 +27,7 @@ func NewClient(db *sql.DB) *Client {
 func (c *Client) CredentialService() authenticator.CredentialService { return c }
 
 func (c *Client) Credential(username authenticator.Username) (*authenticator.Credential, error) {
-	credential := authenticator.Credential{}
+	var credential authenticator.Credential
 
 	row := c.db.QueryRow("SELECT id, username, password_hash, created_at, updated_at FROM credentials WHERE username = $1", username)
 
