@@ -27,7 +27,7 @@ In order to setup the database you need to execute the statements in `database_s
 # Usage
 
 ```bash
-go run cmd/main.go # OR ./bin/authenticator
+go run cmd/authenticator/main.go # OR ./bin/authenticator
 
 curl -X POST -u user:123456 localhost:8080/authenticate
 ```
