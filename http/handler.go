@@ -50,5 +50,5 @@ func (h *Handler) authenticate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "{\"token\":\"%s\"}", token)
+	fmt.Fprintf(w, `{"token":"%s"}`, token)
 }
