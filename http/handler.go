@@ -28,7 +28,7 @@ func (h *Handler) Router() http.Handler {
 func (h *Handler) authenticate(w http.ResponseWriter, r *http.Request) {
 	username, password, ok := r.BasicAuth()
 
-	if ok == false {
+	if !ok {
 		http.Error(w, "Not authorized", 401)
 		return
 	}
