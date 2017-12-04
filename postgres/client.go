@@ -1,42 +1,42 @@
 package postgres
 
 import (
-  "database/sql"
+	"database/sql"
 
-  "github.com/brunograsselli/authenticator"
-  _ "github.com/lib/pq"
+	"github.com/brunograsselli/authenticator"
+	_ "github.com/lib/pq"
 )
 
 type Client struct {
-  db *sql.DB
-  credentialService CredentialService
+	db *sql.DB
 }
 
-func NewClient() *Client {
-	c := &Client{}
-	c.credentialService.client = c
-	return c
+// Ensure Client implements authenticator.CredentialService
+// and authenticator.Client
+var (
+	_ authenticator.Client            = (*Client)(nil)
+	_ authenticator.CredentialService = (*Client)(nil)
+)
+
+func NewClient(db *sql.DB) *Client {
+	return &Client{
+		db: db,
+	}
 }
 
-func (c *Client) Open() error {
-  var err error
-  c.db, err = sql.Open("postgres", "user=postgres dbname=authenticator_development sslmode=disable")
+func (c *Client) CredentialService() authenticator.CredentialService { return c }
 
-  if err != nil {
-    return err
-  }
+func (c *Client) Credential(username authenticator.Username) (*authenticator.Credential, error) {
+	credential := authenticator.Credential{}
 
-  return nil
+	row := c.db.QueryRow("SELECT id, username, password_hash, created_at, updated_at FROM credentials WHERE username = $1", username)
+
+	switch err := row.Scan(&credential.ID, &credential.Username, &credential.PasswordHash, &credential.CreatedAt, &credential.UpdatedAt); err {
+	case sql.ErrNoRows:
+		return nil, nil
+	case nil:
+		return &credential, nil
+	default:
+		return nil, err
+	}
 }
-
-func (c *Client) Close() error {
-  err := c.db.Close()
-
-  if err != nil {
-    return err
-  }
-
-  return nil
-}
-
-func (c *Client) CredentialService() authenticator.CredentialService { return &c.credentialService }
